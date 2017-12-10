@@ -1,6 +1,7 @@
 import datetime
 import os
 import ConfigParser
+import progressbar
 
 from instapaper import Instapaper, Folder
 
@@ -14,8 +15,6 @@ def init():
     secret = configParser.get('Instapaper', 'INSTAPAPER_SECRET')
     login = configParser.get('Login', 'INSTAPAPER_LOGIN')
     password = configParser.get('Login', 'INSTAPAPER_PASSWORD')
-
-    print key, secret, login, password
 
     # Create instance of Instapaper using the OAth credentials
     instapaper = Instapaper(key, secret)
@@ -59,7 +58,7 @@ def get_list_of_existing_highlights():
 # Process bookmarks in one folder
 def process_folder(folder):
     # Show id and title of the folder
-    print folder.folder_id, folder.title
+    print "Processing folder", folder.title, "(id:", folder.folder_id, ")"
 
     change_to_folder(folder.folder_id)
 
@@ -75,11 +74,12 @@ def process_folder(folder):
 
 # Process list of bookmarks
 def process_bookmarks(bookmarks):
-    # Show number of bookmarks to be processed
-    print 'Number of bookmarks: ' + str(len(bookmarks))
-
+    progress = progressbar.ProgressBar(max_value=len(bookmarks))
+    i = 1
     for bookmark in bookmarks:
         process_bookmark(bookmark)
+        progress.update(i)
+        i = i + 1
 
 # Process the highlights of one bookmark
 def process_bookmark(bookmark):
