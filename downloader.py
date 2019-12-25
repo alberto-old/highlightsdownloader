@@ -58,7 +58,7 @@ def get_list_of_existing_highlights():
 # Process bookmarks in one folder
 def process_folder(folder):
     # Show id and title of the folder
-    print "Processing folder", folder.title, "(id:", folder.folder_id, ")"
+    print "Processing folder: ", folder.title, "(id:", folder.folder_id, ")"
 
     change_to_folder(folder.folder_id)
 
